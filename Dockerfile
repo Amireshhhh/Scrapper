@@ -9,6 +9,7 @@ COPY . /app
 
 # Step 4: Install dependencies from requirements.txt
 # RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install beautifulsoup4 requests pandas
 
 # Step 5: Run the scraper when the container launches
 CMD ["python", "scraper.py"]
