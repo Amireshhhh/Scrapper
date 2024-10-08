@@ -1,15 +1,14 @@
-# Step 1: Use a Python base image
-FROM python:3.9-slim
+# Use an official Python runtime as a parent image
+FROM python:3.10-slim
 
-# Step 2: Set the working directory inside the container
+# Set the working directory in the container
 WORKDIR /usr/src/app
 
-# Step 3: Copy the current directory contents into the container at /app
-COPY . /app
+# Copy everything in the current directory (host machine) to /usr/src/app (container)
+COPY . .
 
-# Step 4: Install dependencies from requirements.txt
-# RUN pip install --no-cache-dir -r requirements.txt
+# Install necessary dependencies
 RUN pip install beautifulsoup4 requests pandas
 
-# Step 5: Run the scraper when the container launches
-CMD ["python", "scraper.py"]
+# Run scraper.py when the container launches
+CMD ["python", "./scraper.py"]
