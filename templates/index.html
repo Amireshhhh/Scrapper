@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>News Headlines</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        h1 { text-align: center; }
+        .headline { margin-bottom: 15px; }
+        .source { font-weight: bold; }
+        .timestamp { color: gray; font-size: 0.9em; }
+    </style>
+</head>
+<body>
+    <h1>Latest News Headlines</h1>
+    <div>
+        {% for headline in headlines %}
+            <div class="headline">
+                <span class="source">{{ headline['source'] }}</span>: {{ headline['headline'] }} 
+                <span class="timestamp">({{ headline['timestamp'] }})</span>
+            </div>
+        {% endfor %}
+    </div>
+</body>
+</html>
