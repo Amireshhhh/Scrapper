@@ -9,10 +9,9 @@ def scrape_bloomberg():
     response = requests.get(url)
     soup = BeautifulSoup(response.text, 'html.parser')
     
-    # Specific classes or tags for headlines in Bloomberg
     headlines = []
     # Adjust based on actual observation of structure
-    for item in soup.find_all('a', {'class': 'headline__link'}):  # This is an example class, inspect actual site for correct class
+    for item in soup.find_all('a', {'class': 'headline__link'}):  # Example class
         headline = item.get_text(strip=True)
         if headline:
             headlines.append({
@@ -30,7 +29,7 @@ def scrape_cnbc():
     
     headlines = []
     # Adjust based on CNBC's structure
-    for item in soup.find_all('a', {'class': 'LatestNews-headline'}):  # Example: Adjust this to actual class used for news headlines
+    for item in soup.find_all('a', {'class': 'LatestNews-headline'}):  # Example class
         headline = item.get_text(strip=True)
         if headline:
             headlines.append({
@@ -40,13 +39,72 @@ def scrape_cnbc():
             })
     return headlines
 
+# Function to scrape WSJ headlines
+def scrape_wsjs():
+    url = "https://www.wsj.com/news/business"
+    response = requests.get(url)
+    soup = BeautifulSoup(response.text, 'html.parser')
+    
+    headlines = []
+    # Adjust based on WSJ's structure
+    for item in soup.find_all('a', {'class': 'WSJTheme--headline--7VCzo7v4'}):  # Example class
+        headline = item.get_text(strip=True)
+        if headline:
+            headlines.append({
+                'source': 'WSJ',
+                'headline': headline,
+                'timestamp': datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            })
+    return headlines
+
+# Function to scrape Benzinga headlines
+def scrape_benzinga():
+    url = "https://www.benzinga.com/latest-news"
+    response = requests.get(url)
+    soup = BeautifulSoup(response.text, 'html.parser')
+    
+    headlines = []
+    # Adjust based on Benzinga's structure
+    for item in soup.find_all('a', {'class': 'headline'}):  # Example class
+        headline = item.get_text(strip=True)
+        if headline:
+            headlines.append({
+                'source': 'Benzinga',
+                'headline': headline,
+                'timestamp': datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            })
+    return headlines
+
+# Function to scrape Yahoo Finance headlines
+def scrape_yahoo_finance():
+    url = "https://finance.yahoo.com/"
+    response = requests.get(url)
+    soup = BeautifulSoup(response.text, 'html.parser')
+    
+    headlines = []
+    # Adjust based on Yahoo Finance's structure
+    for item in soup.find_all('h3', {'class': 'Mb(5px)'}):  # Example class
+        link = item.find('a')
+        if link:
+            headline = link.get_text(strip=True)
+            if headline:
+                headlines.append({
+                    'source': 'Yahoo Finance',
+                    'headline': headline,
+                    'timestamp': datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                })
+    return headlines
+
 # Combine results and save to CSV
 def save_headlines_to_csv():
     bloomberg_headlines = scrape_bloomberg()
     cnbc_headlines = scrape_cnbc()
+    wsj_headlines = scrape_wsjs()
+    benzinga_headlines = scrape_benzinga()
+    yahoo_finance_headlines = scrape_yahoo_finance()
     
-    # Combine both lists
-    all_headlines = bloomberg_headlines + cnbc_headlines
+    # Combine all lists
+    all_headlines = bloomberg_headlines + cnbc_headlines + wsj_headlines + benzinga_headlines + yahoo_finance_headlines
     
     # Convert to DataFrame and save to CSV
     df = pd.DataFrame(all_headlines)
