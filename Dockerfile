@@ -10,8 +10,11 @@ COPY . .
 # Install necessary dependencies
 RUN pip install beautifulsoup4 requests pandas flask
 
-# Expose the port Flask will run on
+# Expose the port the app runs on
 EXPOSE 5000
 
-# Run the web server when the container launches
-CMD ["python", "app.py"]
+# Define environment variable (optional)
+ENV FLASK_APP=app.py
+
+# Run the Flask app when the container launches
+CMD ["flask", "run", "--host=0.0.0.0"]
